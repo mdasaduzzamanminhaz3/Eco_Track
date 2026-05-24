@@ -2,12 +2,12 @@ from django.urls import path, include
 from rest_framework_nested import routers
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from waste.views import WasteCategoryViewSet, PickupRequestViewSet
-
+from rewards.views import RewardViewSet
 router = routers.DefaultRouter()
 
 router.register(r'waste-categories', WasteCategoryViewSet, basename='waste-category')
 router.register(r'pickups', PickupRequestViewSet, basename='pickup')
-
+router.register(r'rewards', RewardViewSet, basename='reward')
 urlpatterns = [
     path('', include(router.urls)),
     # djoser auth urls

@@ -7,7 +7,7 @@ from waste.models import PickupRequest
 def calculate_rewards_on_collection(sender,instance,created, **kwargs):
     if created:
         return
-    if instance.status == 'COLLECTED' and not TransactionHistory.objects.filter(pickup_request=instance.exists()).exists():
+    if instance.status == 'COLLECTED' and not TransactionHistory.objects.filter(pickup_request=instance).exists():
         with transaction.atomic():
             # user wallet create or get
             wallet, _ = UserWallet.objects.get_or_create(user=instance.user)

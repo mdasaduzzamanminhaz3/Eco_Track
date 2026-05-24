@@ -19,7 +19,7 @@ class TransactionHistory(models.Model):
         ('REDEEMED', 'Redeemed Prize'),
     )
 
-    id = models.UUIDfield(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     wallet = models.ForeignKey(UserWallet, on_delete=models.CASCADE, related_name='transactions')
     pickup_request = models.ForeignKey(PickupRequest, on_delete=models.SET_NULL, null=True, blank=True)
     transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPES, default ='EARNED')
