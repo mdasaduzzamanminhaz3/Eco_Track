@@ -9,13 +9,13 @@ from .serializers import UserWalletSerializer, LeaderboardSerializer
 
 
 class RewardViewSet(viewsets.GenericViewSet):
-    permission_classes = [permissions.IsAuthenticated]
-
+    queryset = UserWallet.objects.all()
+    serializer_class = UserWalletSerializer
     # User's own wallet profile
     @action(detail=False, methods=['get'], url_path='my-wallet')
     def my_wallet(self,request):
         wallet, _ = UserWallet.objects.get_or_create(user=request.user)
-        serializer = UserWalletSerializer(wallet)
+        serializer = self.get_serializer(wallet)
         return Response(serializer.data, status=status.HTTP_200_OK) 
     
     
@@ -26,8 +26,8 @@ class RewardViewSet(viewsets.GenericViewSet):
     """Global leaderboard (visible to everyone)"""
     @action(detail=False, methods=['get'], url_path='leaderboard',permission_classes=[permissions.AllowAny])
     def leaderboard(self,request):
-        top_wallets = UserWallet.objects.select_related('user').order_by('-total_points')[:10]
-        serializer = LeaderboardSerializer(top_wallets,many=True)
+        top_wallets = UserWallet.objects.order_by('-total_points')[:10]
+        serializer = LeaderboardSerializer(top_wallets, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
